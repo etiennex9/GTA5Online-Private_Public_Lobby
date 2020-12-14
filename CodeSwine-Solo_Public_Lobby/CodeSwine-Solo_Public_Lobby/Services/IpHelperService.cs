@@ -9,9 +9,19 @@ namespace CodeSwine_Solo_Public_Lobby.Services
 {
     public class IpHelperService
     {
-        public string GetBlacklistString(IEnumerable<IPAddress> whitelist)
+        public string GetBlacklistString(IEnumerable<IPAddress> whitelist, IEnumerable<string> lanIps)
         {
-            var sortedAddresses = whitelist.OrderBy(GetIntFromIp).ToList();
+            var lanRanges = lanIps
+                .Where(ValidateIp)
+                .Select(GetSubnet)
+                .Distinct()
+                .SelectMany(GetAllIpsForSubnet);
+
+            var sortedAddresses = lanRanges
+                .Concat(whitelist)
+                .Distinct()
+                .OrderBy(GetIntFromIp)
+                .ToList();
 
             return ConstructRange(sortedAddresses);
         }
@@ -24,6 +34,16 @@ namespace CodeSwine_Solo_Public_Lobby.Services
                 && address.AddressFamily
                     is AddressFamily.InterNetwork
                     or AddressFamily.InterNetworkV6;
+        }
+
+        private static string GetSubnet(string ip) => string.Join(".", ip.Split('.').Take(3));
+
+        private static IEnumerable<IPAddress> GetAllIpsForSubnet(string subnet)
+        {
+            for (var i = 0; i <= 255; i++)
+            {
+                yield return IPAddress.Parse($"{subnet}.{i}");
+            }
         }
 
         private uint GetIntFromIp(IPAddress address)

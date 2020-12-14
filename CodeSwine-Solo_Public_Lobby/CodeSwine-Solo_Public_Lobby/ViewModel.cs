@@ -45,5 +45,29 @@ namespace CodeSwine_Solo_Public_Lobby
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PublicIp)));
             }
         }
+
+        private string _lanIps;
+        public string LanIps
+        {
+            get => _lanIps;
+            set
+            {
+                _lanIps = value;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LanIps)));
+            }
+        }
+
+        private bool _allowLanIps;
+        public bool AllowLanIps
+        {
+            get => _allowLanIps;
+            set
+            {
+                _allowLanIps = value;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AllowLanIps)));
+            }
+        }
     }
 }

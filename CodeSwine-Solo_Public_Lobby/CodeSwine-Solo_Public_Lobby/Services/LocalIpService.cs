@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 
 namespace CodeSwine_Solo_Public_Lobby.Services
 {
@@ -8,6 +11,7 @@ namespace CodeSwine_Solo_Public_Lobby.Services
         private readonly LogService _logService;
 
         private string _publicIpAddress;
+        private List<string> _lanIpAddresses;
 
         public LocalIpService(LogService logService)
         {
@@ -16,9 +20,12 @@ namespace CodeSwine_Solo_Public_Lobby.Services
 
         public string PublicIpAddress => _publicIpAddress ??= GetPublicIpAddress();
 
+        public List<string> LanIpAddresses => _lanIpAddresses ??= GetLanIpAddresses().ToList();
+
         public void RefreshIps()
         {
             _publicIpAddress = null;
+            _lanIpAddresses = null;
         }
 
         private string GetPublicIpAddress()
@@ -43,6 +50,29 @@ namespace CodeSwine_Solo_Public_Lobby.Services
             }
 
             return "Unable to fetch IP.";
+        }
+
+        private IEnumerable<string> GetLanIpAddresses()
+        {
+            IEnumerable<IPAddress> ipAddresses;
+
+            try
+            {
+                ipAddresses = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
+            }
+            catch (Exception ex)
+            {
+                _logService.LogException(ex);
+                yield break;
+            }
+
+            foreach (var ipAddress in ipAddresses)
+            {
+                if (ipAddress.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    yield return ipAddress.ToString();
+                }
+            }
         }
     }
 }

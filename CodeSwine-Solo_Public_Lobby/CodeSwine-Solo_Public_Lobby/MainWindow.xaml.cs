@@ -16,6 +16,7 @@ namespace CodeSwine_Solo_Public_Lobby
         private readonly SettingsService _settingsService;
 
         private readonly ViewModel _viewModel = new();
+        private bool _loading = true;
 
         public MainWindow(FirewallService firewallService, HotkeyService hotkeyService, IpHelperService ipHelperService, LocalIpService localIpService, SettingsService whitelistService)
         {
@@ -36,11 +37,15 @@ namespace CodeSwine_Solo_Public_Lobby
             var settings = _settingsService.Load();
 
             _viewModel.PublicIp = _localIpService.PublicIpAddress;
+            _viewModel.LanIps = string.Join(", ", _localIpService.LanIpAddresses);
+            _viewModel.AllowLanIps = settings.AllowLan;
 
             foreach (var ip in settings.Whitelist)
             {
                 _viewModel.Whitelist.Add(IPAddress.Parse(ip));
             }
+
+            _loading = false;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -61,20 +66,27 @@ namespace CodeSwine_Solo_Public_Lobby
 
         private void Save()
         {
-            _settingsService.Save(new()
+            if (!_loading)
             {
-                Whitelist = _viewModel.Whitelist.Select(ip => ip.ToString()).ToList(),
-            });
+                _settingsService.Save(new()
+                {
+                    Whitelist = _viewModel.Whitelist.Select(ip => ip.ToString()).ToList(),
+                    AllowLan = _viewModel.AllowLanIps
+                });
+            }
         }
 
         private void UpdateRules()
         {
-            var blacklist = _ipHelperService.GetBlacklistString(_viewModel.Whitelist);
+            if (!_loading)
+            {
+                var blacklist = _ipHelperService.GetBlacklistString(_viewModel.Whitelist, _localIpService.LanIpAddresses);
 
-            _viewModel.ErrorMessage =
-                _firewallService.UpsertRules(blacklist, _viewModel.Active)
-                    ? string.Empty
-                    : _firewallService.ErrorMessage;
+                _viewModel.ErrorMessage =
+                    _firewallService.UpsertRules(blacklist, _viewModel.Active)
+                        ? string.Empty
+                        : _firewallService.ErrorMessage;
+            }
         }
 
         private void ButtonAdd_Click(object sender, RoutedEventArgs e)
@@ -103,6 +115,12 @@ namespace CodeSwine_Solo_Public_Lobby
         private void ButtonToggleRules_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.Active = !_viewModel.Active;
+            UpdateRules();
+        }
+
+        private void AllowLan_Checked(object sender, RoutedEventArgs e)
+        {
+            Save();
             UpdateRules();
         }
 
