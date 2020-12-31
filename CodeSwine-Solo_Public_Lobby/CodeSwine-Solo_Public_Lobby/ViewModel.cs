@@ -34,15 +34,15 @@ namespace CodeSwine_Solo_Public_Lobby
             }
         }
 
-        private string _publicIp;
-        public string PublicIp
+        private string _wanIp;
+        public string WanIps
         {
-            get => _publicIp;
+            get => _wanIp;
             set
             {
-                _publicIp = value;
+                _wanIp = value;
 
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PublicIp)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(WanIps)));
             }
         }
 

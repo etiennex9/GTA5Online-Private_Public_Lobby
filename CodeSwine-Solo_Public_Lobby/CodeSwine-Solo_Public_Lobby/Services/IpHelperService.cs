@@ -26,9 +26,14 @@ namespace CodeSwine_Solo_Public_Lobby.Services
             return ConstructRange(sortedAddresses);
         }
 
-        public static bool ValidateIp(string ip) => ValidateIp(ip, out _);
+        public IOrderedEnumerable<IPAddress> Sort(IEnumerable<IPAddress> list)
+        {
+            return list.OrderBy(GetIntFromIp);
+        }
 
-        public static bool ValidateIp(string ip, out IPAddress address)
+        public bool ValidateIp(string ip) => ValidateIp(ip, out _);
+
+        public bool ValidateIp(string ip, out IPAddress address)
         {
             return IPAddress.TryParse(ip, out address)
                 && address.AddressFamily
@@ -46,7 +51,7 @@ namespace CodeSwine_Solo_Public_Lobby.Services
             }
         }
 
-        private uint GetIntFromIp(IPAddress address)
+        private static uint GetIntFromIp(IPAddress address)
         {
             var ip = address.GetAddressBytes();
 
@@ -65,9 +70,9 @@ namespace CodeSwine_Solo_Public_Lobby.Services
             return new IPAddress(newBytes);
         }
 
-        private IPAddress Substract(IPAddress address) => GetIpFromInt(GetIntFromIp(address) - 1);
+        private static IPAddress Substract(IPAddress address) => GetIpFromInt(GetIntFromIp(address) - 1);
 
-        private string ConstructRange(List<IPAddress> list)
+        private static string ConstructRange(List<IPAddress> list)
         {
             if (list.Count > 0)
             {

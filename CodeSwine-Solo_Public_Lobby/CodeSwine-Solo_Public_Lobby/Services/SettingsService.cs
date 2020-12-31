@@ -8,12 +8,14 @@ namespace CodeSwine_Solo_Public_Lobby.Services
 {
     public class SettingsService
     {
+        private readonly IpHelperService _ipHelperService;
         private readonly LogService _logService;
 
         private readonly string _path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
 
-        public SettingsService(LogService logService)
+        public SettingsService(IpHelperService ipHelperService, LogService logService)
         {
+            _ipHelperService = ipHelperService;
             _logService = logService;
         }
 
@@ -28,7 +30,7 @@ namespace CodeSwine_Solo_Public_Lobby.Services
 
                     return settings with
                     {
-                        Whitelist = settings.Whitelist?.Where(IpHelperService.ValidateIp).ToList() ?? new()
+                        Whitelist = settings.Whitelist?.Where(_ipHelperService.ValidateIp).ToList() ?? new()
                     };
                 }
                 catch (Exception ex)

@@ -29,7 +29,7 @@ namespace CodeSwine_Solo_Public_Lobby
             services.AddTransient<FirewallService>();
             services.AddTransient<HotkeyService>();
             services.AddTransient<IpHelperService>();
-            services.AddTransient<LocalIpService>();
+            services.AddTransient<CurrentIpService>();
             services.AddTransient<LogService>();
             services.AddTransient<SettingsService>();
 

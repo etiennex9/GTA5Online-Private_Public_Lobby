@@ -35,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\refresh.png" />
     <Resource Include="Properties\icon.ico" />
     <Resource Include="Images\wireless.png" />
     <Resource Include="Images\gears.png" />

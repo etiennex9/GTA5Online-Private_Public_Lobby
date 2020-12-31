@@ -1,5 +1,6 @@
 ﻿using NetFwTypeLib;
 using System;
+using System.Net.Sockets;
 
 namespace CodeSwine_Solo_Public_Lobby.Services
 {
@@ -118,7 +119,7 @@ namespace CodeSwine_Solo_Public_Lobby.Services
             var firewallRule = (INetFwRule)Activator.CreateInstance(Type.GetTypeFromProgID("HNetCfg.FWRule"));
 
             firewallRule.Action = NET_FW_ACTION_.NET_FW_ACTION_BLOCK;
-            firewallRule.Protocol = 17;
+            firewallRule.Protocol = (int)ProtocolType.Udp;
             firewallRule.InterfaceTypes = "All";
             firewallRule.LocalPorts = "6672";
 
