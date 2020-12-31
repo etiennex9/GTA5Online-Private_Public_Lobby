@@ -6,11 +6,11 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace CodeSwine_Solo_Public_Lobby.Services
+namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
 {
-    public class HotkeyService : IDisposable
+    public class HotkeyService : IHotkeyService
     {
-        private readonly LogService _logService;
+        private readonly ILogService _logService;
 
         private readonly Dictionary<(Key, ModifierKeys), int> _registeredKeys = new();
         private readonly Dictionary<int, Action> _hotkeyActions = new();
@@ -19,7 +19,7 @@ namespace CodeSwine_Solo_Public_Lobby.Services
         private Window _window = null;
         private HwndSource _source = null;
 
-        public HotkeyService(LogService logService)
+        public HotkeyService(ILogService logService)
         {
             _logService = logService;
         }

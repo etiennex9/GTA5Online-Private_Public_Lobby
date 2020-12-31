@@ -5,9 +5,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace CodeSwine_Solo_Public_Lobby.Services
+namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
 {
-    public class IpHelperService
+    public class IpHelperService : IIpHelperService
     {
         public string GetBlacklistString(IEnumerable<IPAddress> whitelist, IEnumerable<string> lanIps)
         {

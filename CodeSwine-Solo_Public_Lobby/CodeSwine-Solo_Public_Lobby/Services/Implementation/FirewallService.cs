@@ -2,16 +2,16 @@
 using System;
 using System.Net.Sockets;
 
-namespace CodeSwine_Solo_Public_Lobby.Services
+namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
 {
-    public class FirewallService
+    public class FirewallService :IFirewallService
     {
         private const string _inboundRuleName = "GTA5 CodeSwine - Private Public Lobby Inbound";
         private const string _outboundRuleName = "GTA5 CodeSwine - Private Public Lobby Outbound";
 
-        private readonly LogService _logService;
+        private readonly ILogService _logService;
 
-        public FirewallService(LogService logService)
+        public FirewallService(ILogService logService)
         {
             _logService = logService;
         }

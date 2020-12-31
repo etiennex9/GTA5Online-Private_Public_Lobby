@@ -1,4 +1,5 @@
 ﻿using CodeSwine_Solo_Public_Lobby.Services;
+using CodeSwine_Solo_Public_Lobby.Services.Implementation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
@@ -26,12 +27,12 @@ namespace CodeSwine_Solo_Public_Lobby
 
         private static void ConfigureServices(ServiceCollection services)
         {
-            services.AddTransient<FirewallService>();
-            services.AddTransient<HotkeyService>();
-            services.AddTransient<IpHelperService>();
-            services.AddTransient<CurrentIpService>();
-            services.AddTransient<LogService>();
-            services.AddTransient<SettingsService>();
+            services.AddTransient<IFirewallService, FirewallService>();
+            services.AddTransient<IHotkeyService, HotkeyService>();
+            services.AddTransient<IIpHelperService, IpHelperService>();
+            services.AddTransient<ICurrentIpService, CurrentIpService>();
+            services.AddTransient<ILogService, LogService>();
+            services.AddTransient<ISettingsService, SettingsService>();
 
             services.AddSingleton<MainWindow>();
         }

@@ -10,16 +10,16 @@ namespace CodeSwine_Solo_Public_Lobby
 {
     public partial class MainWindow : Window
     {
-        private readonly CurrentIpService _currentIpService;
-        private readonly FirewallService _firewallService;
-        private readonly HotkeyService _hotkeyService;
-        private readonly IpHelperService _ipHelperService;
-        private readonly SettingsService _settingsService;
+        private readonly ICurrentIpService _currentIpService;
+        private readonly IFirewallService _firewallService;
+        private readonly IHotkeyService _hotkeyService;
+        private readonly IIpHelperService _ipHelperService;
+        private readonly ISettingsService _settingsService;
 
         private readonly ViewModel _viewModel = new();
         private bool _loading = true;
 
-        public MainWindow(CurrentIpService currentIpService, FirewallService firewallService, HotkeyService hotkeyService, IpHelperService ipHelperService, SettingsService whitelistService)
+        public MainWindow(ICurrentIpService currentIpService, IFirewallService firewallService, IHotkeyService hotkeyService, IIpHelperService ipHelperService, ISettingsService whitelistService)
         {
             _currentIpService = currentIpService;
             _firewallService = firewallService;

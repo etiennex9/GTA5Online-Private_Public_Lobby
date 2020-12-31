@@ -4,16 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 
-namespace CodeSwine_Solo_Public_Lobby.Services
+namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
 {
-    public class SettingsService
+    public class SettingsService : ISettingsService
     {
-        private readonly IpHelperService _ipHelperService;
-        private readonly LogService _logService;
+        private readonly IIpHelperService _ipHelperService;
+        private readonly ILogService _logService;
 
         private readonly string _path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json");
 
-        public SettingsService(IpHelperService ipHelperService, LogService logService)
+        public SettingsService(IIpHelperService ipHelperService, ILogService logService)
         {
             _ipHelperService = ipHelperService;
             _logService = logService;

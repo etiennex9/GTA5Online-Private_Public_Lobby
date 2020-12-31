@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace CodeSwine_Solo_Public_Lobby.Services
+namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
 {
-    public class LogService
+    public class LogService : ILogService
     {
         private readonly string _path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "error.log");
 

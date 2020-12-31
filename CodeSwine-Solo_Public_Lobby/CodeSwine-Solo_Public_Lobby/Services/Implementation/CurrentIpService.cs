@@ -4,16 +4,16 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 
-namespace CodeSwine_Solo_Public_Lobby.Services
+namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
 {
-    public class CurrentIpService
+    public class CurrentIpService : ICurrentIpService
     {
-        private readonly LogService _logService;
+        private readonly ILogService _logService;
 
         private List<string> _wanIpAddresses;
         private List<string> _lanIpAddresses;
 
-        public CurrentIpService(LogService logService)
+        public CurrentIpService(ILogService logService)
         {
             _logService = logService;
         }
