@@ -27,6 +27,8 @@ namespace CodeSwine_Solo_Public_Lobby
 
         private static void ConfigureServices(ServiceCollection services)
         {
+            services.AddHttpClient();
+
             services.AddTransient<IConnectionService, ConnectionService>();
             services.AddTransient<ICurrentIpService, CurrentIpService>();
             services.AddTransient<IFirewallService, FirewallService>();

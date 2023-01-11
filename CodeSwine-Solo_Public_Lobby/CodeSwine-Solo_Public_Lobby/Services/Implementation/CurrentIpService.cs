@@ -2,70 +2,75 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
 {
     public class CurrentIpService : ICurrentIpService
     {
+        private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILogService _logService;
 
-        private List<IPAddress> _wanIpAddresses;
-        private List<IPAddress> _lanIpAddresses;
-
-        public CurrentIpService(ILogService logService)
+        public CurrentIpService(IHttpClientFactory httpClientFactory, ILogService logService)
         {
+            _httpClientFactory = httpClientFactory;
             _logService = logService;
         }
 
-        public List<IPAddress> WanIpAddresses => _wanIpAddresses ??= GetWanIpAddresses().ToList();
+        public IReadOnlyCollection<IPAddress> WanIpAddresses { get; private set; }
 
-        public List<IPAddress> LanIpAddresses => _lanIpAddresses ??= GetLanIpAddresses().ToList();
+        public IReadOnlyCollection<IPAddress> LanIpAddresses { get; private set; }
 
-        public void RefreshIps()
+        public async Task RefreshIps()
         {
-            _wanIpAddresses = null;
-            _lanIpAddresses = null;
+            WanIpAddresses = await GetWanIpAddresses();
+            LanIpAddresses = await GetLanIpAddresses();
         }
 
-        private IEnumerable<IPAddress> GetWanIpAddresses()
+        private async Task<IReadOnlyCollection<IPAddress>> GetWanIpAddresses()
         {
-            if (DownloadString("https://ipv6.icanhazip.com", out var ipv6))
-            {
-                yield return ipv6;
-            }
+            var results = await Task.WhenAll(
+                DownloadString("https://ipv4.icanhazip.com"),
+                DownloadString("https://ipv6.icanhazip.com")
+            );
 
-            if (DownloadString("https://ipv4.icanhazip.com", out var ipv4))
-            {
-                yield return ipv4;
-            }
+            return results.Where(r => r.success).Select(r => r.value).ToList();
 
-            bool DownloadString(string uri, out IPAddress value)
+            async Task<(bool success, IPAddress value)> DownloadString(string uri)
             {
+                var httpClient = _httpClientFactory.CreateClient();
+
                 try
                 {
-                    value = IPAddress.Parse(new WebClient().DownloadString(uri).Trim());
-                    return true;
+                    var rawIp = await httpClient.GetStringAsync(uri);
+                    var ip = IPAddress.Parse(rawIp.Trim());
+
+                    return (true, ip);
                 }
                 catch (Exception ex)
                 {
                     _logService.LogException(ex);
 
-                    value = null;
-                    return false;
+                    return (false, null);
                 }
             }
         }
 
-        private IEnumerable<IPAddress> GetLanIpAddresses()
+        private async Task<IReadOnlyCollection<IPAddress>> GetLanIpAddresses()
         {
-            return TryGet().Where(ip => ip.AddressFamily == AddressFamily.InterNetwork);
+            return (await TryGet())
+                .Where(ip => ip.AddressFamily == AddressFamily.InterNetwork)
+                .ToList();
 
-            IEnumerable<IPAddress> TryGet()
+            async Task<IEnumerable<IPAddress>> TryGet()
             {
                 try
                 {
-                    return Dns.GetHostEntry(Dns.GetHostName()).AddressList;
+                    var hostEntry = await Dns.GetHostEntryAsync(Dns.GetHostName());
+
+                    return hostEntry.AddressList;
                 }
                 catch (Exception ex)
                 {

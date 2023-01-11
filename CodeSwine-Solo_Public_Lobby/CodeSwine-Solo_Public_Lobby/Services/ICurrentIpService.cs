@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace CodeSwine_Solo_Public_Lobby.Services
 {
     public interface ICurrentIpService
     {
-        List<IPAddress> WanIpAddresses { get; }
+        IReadOnlyCollection<IPAddress> WanIpAddresses { get; }
 
-        List<IPAddress> LanIpAddresses { get; }
+        IReadOnlyCollection<IPAddress> LanIpAddresses { get; }
 
-        void RefreshIps();
+        Task RefreshIps();
     }
 }

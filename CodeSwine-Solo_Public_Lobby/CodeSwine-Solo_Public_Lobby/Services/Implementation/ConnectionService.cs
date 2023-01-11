@@ -35,7 +35,7 @@ namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
             foreach (var device in _captureDevices)
             {
                 device.OnPacketArrival += CaptureDevice_OnPacketArrival;
-                device.Open(DeviceMode.Promiscuous, 1000);
+                device.Open(DeviceModes.Promiscuous, 1000);
                 device.Filter = "udp port " + udpPort;
                 device.StartCapture();
             }
@@ -60,9 +60,9 @@ namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
             }
         }
 
-        private void CaptureDevice_OnPacketArrival(object sender, CaptureEventArgs e)
+        private void CaptureDevice_OnPacketArrival(object sender, PacketCapture e)
         {
-            var packet = Packet.ParsePacket(e.Packet.LinkLayerType, e.Packet.Data);
+            var packet = Packet.ParsePacket(e.Device.LinkType, e.Data.ToArray());
             if (packet is EthernetPacket ethernetPacket &&
                 ethernetPacket.HasPayloadPacket &&
                 ethernetPacket.Type is EthernetType.IPv4 or EthernetType.IPv6)

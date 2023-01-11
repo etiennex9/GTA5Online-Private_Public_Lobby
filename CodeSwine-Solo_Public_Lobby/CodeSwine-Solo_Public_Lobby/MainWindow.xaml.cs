@@ -88,12 +88,15 @@ namespace CodeSwine_Solo_Public_Lobby
 
         private void UpdateExtendedWhitelist()
         {
-            _viewModel.ExtendedWhitelist = _viewModel.AllowLanIps
+            if (!_loading)
+            {
+                _viewModel.ExtendedWhitelist = _viewModel.AllowLanIps
                 ? _ipHelperService
                     .GetExtendedWhitelist(_currentIpService.WanIpAddresses, _currentIpService.LanIpAddresses)
                     .Select(ComparableIPAddress.From)
                     .ToList()
                 : Enumerable.Empty<IPAddress>();
+            }
 
             UpdateRules();
         }
@@ -112,9 +115,10 @@ namespace CodeSwine_Solo_Public_Lobby
             }
         }
 
-        private void ButtonRefreshIps_Click(object sender, RoutedEventArgs e)
+        private async void ButtonRefreshIps_Click(object sender, RoutedEventArgs e)
         {
-            _currentIpService.RefreshIps();
+            await _currentIpService.RefreshIps();
+
             _viewModel.WanIps = string.Join(", ", _currentIpService.WanIpAddresses);
             _viewModel.LanIps = string.Join(", ", _currentIpService.LanIpAddresses);
 
