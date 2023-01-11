@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net;
 
-namespace CodeSwine_Solo_Public_Lobby.Services
+namespace GTA5_Private_Public_Lobby.Services
 {
     public interface IIpHelperService
     {

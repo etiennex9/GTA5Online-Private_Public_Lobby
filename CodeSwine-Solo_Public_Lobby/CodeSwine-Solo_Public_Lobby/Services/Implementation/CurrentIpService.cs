@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
-namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
+namespace GTA5_Private_Public_Lobby.Services.Implementation
 {
     public class CurrentIpService : ICurrentIpService
     {

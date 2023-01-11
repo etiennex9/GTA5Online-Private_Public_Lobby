@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
 
-namespace CodeSwine_Solo_Public_Lobby
+namespace GTA5_Private_Public_Lobby
 {
     public class ViewModel : INotifyPropertyChanged
     {

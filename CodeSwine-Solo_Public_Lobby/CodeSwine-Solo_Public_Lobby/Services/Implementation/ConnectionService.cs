@@ -6,7 +6,7 @@ using System.Net;
 using PacketDotNet;
 using SharpPcap;
 
-namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
+namespace GTA5_Private_Public_Lobby.Services.Implementation
 {
     public class ConnectionService : IConnectionService
     {

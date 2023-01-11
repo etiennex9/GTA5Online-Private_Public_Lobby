@@ -2,7 +2,7 @@
 using System.Net;
 using System.Linq;
 
-namespace CodeSwine_Solo_Public_Lobby
+namespace GTA5_Private_Public_Lobby
 {
     public class ComparableIPAddress : IPAddress, IComparable
     {

@@ -1,4 +1,4 @@
-﻿using CodeSwine_Solo_Public_Lobby.Extensions;
+﻿using GTA5_Private_Public_Lobby.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
+namespace GTA5_Private_Public_Lobby.Services.Implementation
 {
     public class IpHelperService : IIpHelperService
     {

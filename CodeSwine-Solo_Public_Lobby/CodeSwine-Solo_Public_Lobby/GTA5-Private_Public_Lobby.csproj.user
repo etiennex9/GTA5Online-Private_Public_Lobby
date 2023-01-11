@@ -12,5 +12,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <EnableSecurityDebugging>false</EnableSecurityDebugging>
+    <_LastSelectedProfileId>D:\Documents\Visual Studio - Code\GTA5Online-Private_Public_Lobby\CodeSwine-Solo_Public_Lobby\CodeSwine-Solo_Public_Lobby\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
 </Project>

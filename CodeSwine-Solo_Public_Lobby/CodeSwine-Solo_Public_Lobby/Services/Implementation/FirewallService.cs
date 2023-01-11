@@ -2,12 +2,12 @@
 using System;
 using System.Net.Sockets;
 
-namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
+namespace GTA5_Private_Public_Lobby.Services.Implementation
 {
     public class FirewallService : IFirewallService
     {
-        private const string _inboundRuleName = "GTA5 CodeSwine - Private Public Lobby Inbound";
-        private const string _outboundRuleName = "GTA5 CodeSwine - Private Public Lobby Outbound";
+        private const string _inboundRuleName = "GTA5 - Private Public Lobby Inbound";
+        private const string _outboundRuleName = "GTA5 - Private Public Lobby Outbound";
 
         private readonly ILogService _logService;
 
@@ -48,7 +48,7 @@ namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
         }
 
         /// <summary>
-        /// Removes CodeSwine Inbound & Outbound firewall rules at program exit.
+        /// Removes Inbound & Outbound firewall rules at program exit.
         /// </summary>
         public bool DeleteRules()
         {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CodeSwine_Solo_Public_Lobby.Models
+namespace GTA5_Private_Public_Lobby.Models
 {
     public record Settings
     {

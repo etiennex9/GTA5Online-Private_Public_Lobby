@@ -1,9 +1,9 @@
-﻿using CodeSwine_Solo_Public_Lobby.Services;
-using CodeSwine_Solo_Public_Lobby.Services.Implementation;
+﻿using GTA5_Private_Public_Lobby.Services;
+using GTA5_Private_Public_Lobby.Services.Implementation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
-namespace CodeSwine_Solo_Public_Lobby
+namespace GTA5_Private_Public_Lobby
 {
     /// <summary>
     /// Interaction logic for App.xaml

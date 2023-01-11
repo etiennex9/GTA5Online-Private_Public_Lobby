@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace CodeSwine_Solo_Public_Lobby.Services
+namespace GTA5_Private_Public_Lobby.Services
 {
     public interface IHotkeyService : IDisposable
     {

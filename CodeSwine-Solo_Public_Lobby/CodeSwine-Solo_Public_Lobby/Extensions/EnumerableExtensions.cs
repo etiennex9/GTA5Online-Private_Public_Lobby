@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeSwine_Solo_Public_Lobby.Extensions
+namespace GTA5_Private_Public_Lobby.Extensions
 {
     public static class EnumerableExtensions
     {

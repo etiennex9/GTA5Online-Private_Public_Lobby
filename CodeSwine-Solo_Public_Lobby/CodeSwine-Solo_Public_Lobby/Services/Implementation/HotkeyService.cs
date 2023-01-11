@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
+namespace GTA5_Private_Public_Lobby.Services.Implementation
 {
     public class HotkeyService : IHotkeyService
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Data;
 
-namespace CodeSwine_Solo_Public_Lobby
+namespace GTA5_Private_Public_Lobby
 {
     public class CollectionContainsItemConverter : IMultiValueConverter
     {

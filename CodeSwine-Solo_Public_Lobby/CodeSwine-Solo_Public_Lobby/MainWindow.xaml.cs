@@ -1,5 +1,5 @@
-﻿using CodeSwine_Solo_Public_Lobby.Extensions;
-using CodeSwine_Solo_Public_Lobby.Services;
+﻿using GTA5_Private_Public_Lobby.Extensions;
+using GTA5_Private_Public_Lobby.Services;
 using System;
 using System.Linq;
 using System.Net;
@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace CodeSwine_Solo_Public_Lobby
+namespace GTA5_Private_Public_Lobby
 {
     public partial class MainWindow : Window
     {

@@ -1,10 +1,10 @@
-﻿using CodeSwine_Solo_Public_Lobby.Models;
+﻿using GTA5_Private_Public_Lobby.Models;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 
-namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
+namespace GTA5_Private_Public_Lobby.Services.Implementation
 {
     public class SettingsService : ISettingsService
     {

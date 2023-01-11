@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CodeSwine_Solo_Public_Lobby.Services
+namespace GTA5_Private_Public_Lobby.Services
 {
     public interface ICurrentIpService
     {
