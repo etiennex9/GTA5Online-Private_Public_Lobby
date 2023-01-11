@@ -5,10 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:CodeSwine_Solo_Public_Lobby"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=local:ViewModel}"
         Title="GTA 5 Online: Private Public Lobby"
-        Height="400" Width="900" ResizeMode="CanMinimize">
+        Width="900" Height="500" MinWidth="800" MinHeight="400">
+
+    <Window.Resources>
+        <local:CollectionContainsItemConverter x:Key="CollectionContainsItem" />
+
+        <x:Array Type="{x:Type s:String}" x:Key="FallbackIPs">
+            <s:String>127.0.0.1</s:String>
+            <s:String>192.168.0.1</s:String>
+        </x:Array>
+
+        <CollectionViewSource x:Key="SortedWhitelist" Source="{Binding Path=Whitelist, FallbackValue={StaticResource FallbackIPs}, Mode=OneWay}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription Direction="Ascending" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="SortedActiveConnections" Source="{Binding Path=ActiveConnections, FallbackValue={StaticResource FallbackIPs}, Mode=OneWay}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription Direction="Ascending" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -17,10 +38,11 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="12*"/>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="125"/>
+            <RowDefinition/>
+            <RowDefinition Height="125"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="12,0,12,15">
@@ -105,7 +127,7 @@
             </Button>
         </Grid>
 
-        <Border Grid.Row="2" Grid.Column="0" Height="120" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="20,0,12,0" Background="#007BFF">
+        <Border Grid.Row="3" Grid.Column="0" Height="120" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="20,0,12,0" Background="#007BFF">
             <Grid Margin="2" ClipToBounds="True">
                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Margin="3,0,0,0" Foreground="White" FontSize="12" FontWeight="SemiBold">
                     1. Activate the rules.<LineBreak/>
@@ -124,44 +146,7 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="12,0,12,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition/>
-                <RowDefinition Height="40"/>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="#F16C20">
-                <TextBlock Margin="0,0,40,0" Foreground="White" FontSize="18" FontWeight="SemiBold" TextAlignment="Center" VerticalAlignment="Center">
-                    <Run Text="{Binding Path=Whitelist.Count, FallbackValue=0, Mode=OneWay}"/>
-                    whitelisted IPs
-                </TextBlock>
-                <Image Source="Images/wireless.png" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,5,0" RenderTransformOrigin="0.5,0.5">
-                    <Image.RenderTransform>
-                        <RotateTransform Angle="25"/>
-                    </Image.RenderTransform>
-                </Image>
-            </Grid>
-            <ListBox Grid.Row="1" x:Name="lsbAddresses" FontSize="14">
-                <ListBox.ItemsSource>
-                    <Binding Path="Whitelist">
-                        <Binding.FallbackValue>
-                            <x:Array Type="{x:Type s:String}">
-                                <s:String>127.0.0.1</s:String>
-                                <s:String>192.168.0.1</s:String>
-                            </x:Array>
-                        </Binding.FallbackValue>
-                    </Binding>
-                </ListBox.ItemsSource>
-            </ListBox>
-            <Button Grid.Row="2" Click="ButtonRemove_Click" HorizontalContentAlignment="Left" Background="#DC3545" BorderThickness="0">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="Images/trash.png" Margin="5,3,5,3"/>
-                    <Label Content="Remove selected IP." Foreground="White" FontSize="18" FontWeight="SemiBold"/>
-                </StackPanel>
-            </Button>
-        </Grid>
-
-        <Grid Grid.Row="1" Grid.Column="2" Margin="12,0,20,0">
+        <Grid Grid.Row="1" Grid.Column="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="40"/>
@@ -183,7 +168,86 @@
             </CheckBox>
         </Grid>
 
-        <Border Grid.Row="2" Grid.Column="2" Margin="12,0,20,0" BorderBrush="#ABADB3" BorderThickness="1">
+        <Grid Grid.Row="2" Grid.Column="1" Grid.RowSpan="2" Margin="12,0,12,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="#F16C20">
+                <TextBlock Margin="0,0,40,0" Foreground="White" FontSize="18" FontWeight="SemiBold" TextAlignment="Center" VerticalAlignment="Center">
+                    <Run Text="{Binding Path=Whitelist.Count, FallbackValue=0, Mode=OneWay}"/>
+                    whitelisted IPs
+                </TextBlock>
+                <Image Source="Images/wireless.png" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,5,0" RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <RotateTransform Angle="25"/>
+                    </Image.RenderTransform>
+                </Image>
+            </Grid>
+            <ListBox Grid.Row="1" x:Name="lsbWhitelist" FontSize="14" Foreground="Green" ItemsSource="{Binding Source={StaticResource SortedWhitelist}, Mode=OneWay}"/>
+            <Button Grid.Row="2" Click="ButtonRemove_Click" HorizontalContentAlignment="Left" Background="#DC3545" BorderThickness="0">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Images/trash.png" Margin="5,3,5,3"/>
+                    <Label Content="Remove selected IP" Foreground="White" FontSize="18" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.Column="2" Grid.RowSpan="2" Margin="12,0,20,12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="#F16C20">
+                <TextBlock Margin="0,0,40,0" Foreground="White" FontSize="18" FontWeight="SemiBold" TextAlignment="Center" VerticalAlignment="Center">
+                    <Run Text="{Binding Path=ActiveConnections.Count, FallbackValue=0, Mode=OneWay}"/>
+                    active connections
+                </TextBlock>
+                <Image Source="Images/wireless.png" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,5,0" RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <RotateTransform Angle="25"/>
+                    </Image.RenderTransform>
+                </Image>
+            </Grid>
+            <ListBox Grid.Row="1" x:Name="lsbActiveConnections" FontSize="14" ItemsSource="{Binding Source={StaticResource SortedActiveConnections}, Mode=OneWay}">
+                <ListBox.Resources>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Triggers>
+                            <DataTrigger Value="False">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource CollectionContainsItem}" FallbackValue="False">
+                                        <Binding Mode="OneWay"/>
+                                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=Window}" Path="DataContext.Whitelist" Mode="OneWay"/>
+                                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=Window}" Path="DataContext.ExtendedWhitelist" Mode="OneWay"/>
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <Setter Property="Foreground" Value="#DC3545"/>
+                            </DataTrigger>
+                            <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                    <MultiBinding Converter="{StaticResource CollectionContainsItem}" FallbackValue="False">
+                                        <Binding Mode="OneWay"/>
+                                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=Window}" Path="DataContext.Whitelist" Mode="OneWay"/>
+                                        <Binding RelativeSource="{RelativeSource FindAncestor, AncestorType=Window}" Path="DataContext.ExtendedWhitelist" Mode="OneWay"/>
+                                    </MultiBinding>
+                                </DataTrigger.Binding>
+                                <Setter Property="Foreground" Value="#28A745"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.Resources>
+            </ListBox>
+            <Button Grid.Row="2" Click="ButtonAddSelected_Click" FontSize="18" Background="#FFC107" BorderThickness="0" HorizontalContentAlignment="Stretch">
+                <Grid>
+                    <Label Content="Add selected IP" Foreground="White" FontWeight="SemiBold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Image Source="Images/add.png" HorizontalAlignment="Right" Margin="4"/>
+                </Grid>
+            </Button>
+        </Grid>
+
+        <Border Grid.Row="3" Grid.Column="2" Margin="12,0,20,0" BorderBrush="#ABADB3" BorderThickness="1">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -195,19 +259,23 @@
                     <Label Content="gta5-mods.com/users/CodeSwine" VerticalContentAlignment="Center" Foreground="#707C80"/>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <Image Source="Images/mpgh.png" Width="40" Height="40"/>
-                    <Label Content="forum/member.php?u=4577569" VerticalContentAlignment="Center" Foreground="#707C80"/>
+                    <Image Source="Images/Github.png" Width="40" Height="40"/>
+                    <Label Content="github.com/CodeSwine" VerticalContentAlignment="Center" Foreground="#707C80"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                     <Image Source="Images/Github.png" Width="40" Height="40"/>
-                    <Label Content="github.com/CodeSwine" VerticalContentAlignment="Center" Foreground="#707C80"/>
+                    <Label Content="github.com/etiennex9" VerticalContentAlignment="Center" Foreground="#707C80"/>
                 </StackPanel>
             </Grid>
         </Border>
 
         <!-- Row 4 -->
-        <Label Grid.Row="3" Grid.Column="0" Content="Hotkey: CTRL+F10 to toggle." FontWeight="Bold" Foreground="#707C80" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0"/>
-        <TextBlock Grid.Row="3" Grid.ColumnSpan="3" Text="{Binding Path=ErrorMessage, Mode=OneWay, FallbackValue=Run this program as administrator!}" Foreground="Red" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Label Grid.Row="3" Grid.Column="2" Content="Made by CodeSwine." Foreground="#707C80" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0"/>
+        <Label Grid.Row="4" Grid.Column="0" Content="Hotkey: CTRL+F10 to toggle." FontWeight="Bold" Foreground="#707C80" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12,0,0,0"/>
+        <TextBlock Grid.Row="4" Grid.ColumnSpan="3" Text="{Binding Path=ErrorMessage, Mode=OneWay, FallbackValue=Run this program as administrator!}" Foreground="Red" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="4" Grid.Column="2" Foreground="#707C80" TextAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
+            Made by CodeSwine.
+            <LineBreak />
+            Edited by Etienne Scott.
+        </TextBlock>
     </Grid>
 </Window>

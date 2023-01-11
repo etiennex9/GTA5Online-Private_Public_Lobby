@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 
 namespace CodeSwine_Solo_Public_Lobby.Services
 {
     public interface ICurrentIpService
     {
-        List<string> WanIpAddresses { get; }
+        List<IPAddress> WanIpAddresses { get; }
 
-        List<string> LanIpAddresses { get; }
+        List<IPAddress> LanIpAddresses { get; }
 
         void RefreshIps();
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CodeSwine_Solo_Public_Lobby.Extensions
 {
@@ -13,6 +9,14 @@ namespace CodeSwine_Solo_Public_Lobby.Extensions
             foreach (var item in collection)
             {
                 destination.Add(item);
+            }
+        }
+
+        public static void RemoveRange<T>(this ICollection<T> destination, IEnumerable<T> collection)
+        {
+            foreach (var item in collection)
+            {
+                destination.Remove(item);
             }
         }
     }

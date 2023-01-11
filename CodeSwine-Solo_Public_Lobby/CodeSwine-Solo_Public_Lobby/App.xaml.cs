@@ -27,10 +27,11 @@ namespace CodeSwine_Solo_Public_Lobby
 
         private static void ConfigureServices(ServiceCollection services)
         {
+            services.AddTransient<IConnectionService, ConnectionService>();
+            services.AddTransient<ICurrentIpService, CurrentIpService>();
             services.AddTransient<IFirewallService, FirewallService>();
             services.AddTransient<IHotkeyService, HotkeyService>();
             services.AddTransient<IIpHelperService, IpHelperService>();
-            services.AddTransient<ICurrentIpService, CurrentIpService>();
             services.AddTransient<ILogService, LogService>();
             services.AddTransient<ISettingsService, SettingsService>();
 

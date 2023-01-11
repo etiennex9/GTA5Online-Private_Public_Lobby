@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeSwine_Solo_Public_Lobby.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -9,26 +10,24 @@ namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
 {
     public class IpHelperService : IIpHelperService
     {
-        public string GetBlacklistString(IEnumerable<IPAddress> whitelist, IEnumerable<string> lanIps)
+        public IEnumerable<IPAddress> GetExtendedWhitelist(IEnumerable<IPAddress> wanIPs, IEnumerable<IPAddress> lanIPs)
         {
-            var lanRanges = lanIps
-                .Where(ValidateIp)
-                .Select(GetSubnet)
+            return lanIPs
+                .Select(ip => GetSubnet(ip.ToString()))
                 .Distinct()
-                .SelectMany(GetAllIpsForSubnet);
+                .SelectMany(GetAllIpsForSubnet)
+                .Concat(wanIPs);
+        }
 
-            var sortedAddresses = lanRanges
-                .Concat(whitelist)
+        public string GetBlacklistString(IEnumerable<IPAddress> whitelist)
+        {
+            var sortedAddresses = whitelist
                 .Distinct()
-                .OrderBy(GetIntFromIp)
+                .Select(ComparableIPAddress.From)
+                .Sort()
                 .ToList();
 
             return ConstructRange(sortedAddresses);
-        }
-
-        public IOrderedEnumerable<IPAddress> Sort(IEnumerable<IPAddress> list)
-        {
-            return list.OrderBy(GetIntFromIp);
         }
 
         public bool ValidateIp(string ip) => ValidateIp(ip, out _);
@@ -51,28 +50,7 @@ namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
             }
         }
 
-        private static uint GetIntFromIp(IPAddress address)
-        {
-            var ip = address.GetAddressBytes();
-
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(ip);
-            }
-
-            return BitConverter.ToUInt32(ip, 0);
-        }
-
-        private static IPAddress GetIpFromInt(uint ip)
-        {
-            var newBytes = new IPAddress(ip).GetAddressBytes();
-            Array.Reverse(newBytes);
-            return new IPAddress(newBytes);
-        }
-
-        private static IPAddress Substract(IPAddress address) => GetIpFromInt(GetIntFromIp(address) - 1);
-
-        private static string ConstructRange(List<IPAddress> list)
+        private static string ConstructRange(List<ComparableIPAddress> list)
         {
             if (list.Count > 0)
             {
@@ -83,16 +61,16 @@ namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
                 {
                     if (!isContiguous)
                     {
-                        scope.Append(Substract(list[i]));
+                        scope.Append(list[i] - 1);
                         scope.Append(',');
                     }
 
-                    var next = GetIntFromIp(list[i]) + 1;
-                    isContiguous = i < list.Count - 1 && next == GetIntFromIp(list[i + 1]);
+                    var next = list[i] + 1;
+                    isContiguous = i < list.Count - 1 && next == list[i + 1];
 
                     if (!isContiguous)
                     {
-                        scope.Append(GetIpFromInt(next));
+                        scope.Append(next);
                         scope.Append('-');
                     }
                 }

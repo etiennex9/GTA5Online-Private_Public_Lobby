@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
 
@@ -7,6 +8,8 @@ namespace CodeSwine_Solo_Public_Lobby
     public class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableCollection<IPAddress> ActiveConnections { get; } = new();
 
         public ObservableCollection<IPAddress> Whitelist { get; } = new();
 
@@ -67,6 +70,18 @@ namespace CodeSwine_Solo_Public_Lobby
                 _allowLanIps = value;
 
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AllowLanIps)));
+            }
+        }
+
+        private IEnumerable<IPAddress> _extendedWhitelist;
+        public IEnumerable<IPAddress> ExtendedWhitelist
+        {
+            get => _extendedWhitelist;
+            set
+            {
+                _extendedWhitelist = value;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ExtendedWhitelist)));
             }
         }
     }

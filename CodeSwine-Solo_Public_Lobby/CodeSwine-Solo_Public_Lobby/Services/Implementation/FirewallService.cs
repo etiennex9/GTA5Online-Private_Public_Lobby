@@ -4,7 +4,7 @@ using System.Net.Sockets;
 
 namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
 {
-    public class FirewallService :IFirewallService
+    public class FirewallService : IFirewallService
     {
         private const string _inboundRuleName = "GTA5 CodeSwine - Private Public Lobby Inbound";
         private const string _outboundRuleName = "GTA5 CodeSwine - Private Public Lobby Outbound";

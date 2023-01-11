@@ -6,9 +6,9 @@ namespace CodeSwine_Solo_Public_Lobby.Services
 {
     public interface IIpHelperService
     {
-        string GetBlacklistString(IEnumerable<IPAddress> whitelist, IEnumerable<string> lanIps);
+        IEnumerable<IPAddress> GetExtendedWhitelist(IEnumerable<IPAddress> wanIPs, IEnumerable<IPAddress> lanIPs);
 
-        IOrderedEnumerable<IPAddress> Sort(IEnumerable<IPAddress> list);
+        string GetBlacklistString(IEnumerable<IPAddress> whitelist);
 
         bool ValidateIp(string ip);
 

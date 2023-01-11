@@ -10,17 +10,17 @@ namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
     {
         private readonly ILogService _logService;
 
-        private List<string> _wanIpAddresses;
-        private List<string> _lanIpAddresses;
+        private List<IPAddress> _wanIpAddresses;
+        private List<IPAddress> _lanIpAddresses;
 
         public CurrentIpService(ILogService logService)
         {
             _logService = logService;
         }
 
-        public List<string> WanIpAddresses => _wanIpAddresses ??= GetWanIpAddresses().ToList();
+        public List<IPAddress> WanIpAddresses => _wanIpAddresses ??= GetWanIpAddresses().ToList();
 
-        public List<string> LanIpAddresses => _lanIpAddresses ??= GetLanIpAddresses().ToList();
+        public List<IPAddress> LanIpAddresses => _lanIpAddresses ??= GetLanIpAddresses().ToList();
 
         public void RefreshIps()
         {
@@ -28,7 +28,7 @@ namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
             _lanIpAddresses = null;
         }
 
-        private IEnumerable<string> GetWanIpAddresses()
+        private IEnumerable<IPAddress> GetWanIpAddresses()
         {
             if (DownloadString("https://ipv6.icanhazip.com", out var ipv6))
             {
@@ -40,11 +40,11 @@ namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
                 yield return ipv4;
             }
 
-            bool DownloadString(string uri, out string value)
+            bool DownloadString(string uri, out IPAddress value)
             {
                 try
                 {
-                    value = new WebClient().DownloadString(uri).Trim();
+                    value = IPAddress.Parse(new WebClient().DownloadString(uri).Trim());
                     return true;
                 }
                 catch (Exception ex)
@@ -57,15 +57,9 @@ namespace CodeSwine_Solo_Public_Lobby.Services.Implementation
             }
         }
 
-        private IEnumerable<string> GetLanIpAddresses()
+        private IEnumerable<IPAddress> GetLanIpAddresses()
         {
-            foreach (var ipAddress in TryGet())
-            {
-                if (ipAddress.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    yield return ipAddress.ToString();
-                }
-            }
+            return TryGet().Where(ip => ip.AddressFamily == AddressFamily.InterNetwork);
 
             IEnumerable<IPAddress> TryGet()
             {
