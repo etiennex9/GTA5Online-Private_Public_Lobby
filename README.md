@@ -4,7 +4,7 @@ A tool to setup your GTA5 firewall rules easily. Adding IPs to your whitelist en
 ![demo](screenshot.png)
 
 ## Setup:
-1. [Download the latest release and extract all files](releases).
+1. Download the latest release and extract all files
 2. Inside the folder start the .EXE as administrator.
 
 ## How-to (SOLO lobby):
